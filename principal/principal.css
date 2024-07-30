@@ -5,6 +5,7 @@ body{
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 header{
@@ -13,13 +14,13 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 5%;
+    padding: 10px 5%;
     background-color: white;
     border-bottom: 1px solid #374866;
 }
 
 img{
-    width: 12rem;
+    width: 9rem;
 }
 
 ul{
