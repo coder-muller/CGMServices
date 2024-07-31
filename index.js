@@ -35,7 +35,8 @@ async function logIn() {
             localStorage.setItem('chaveConectada', user.chave)
             localStorage.setItem('idConectado', user.id)
             localStorage.setItem('usuarioConectado', user.nome)
-            
+            localStorage.setItem('permissaoConectada', user.permissao)
+
             window.location.href='principal/principal.html'
         } catch (error) {
             console.error("Erro ao realizar login! erro:" + error)
