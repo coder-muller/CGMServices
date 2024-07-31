@@ -31,6 +31,11 @@ async function logIn() {
                 return 
             }
             loginForm.reset()
+
+            localStorage.setItem('chaveConectada', user.chave)
+            localStorage.setItem('idConectado', user.id)
+            localStorage.setItem('usuarioConectado', user.nome)
+            
             window.location.href='principal/principal.html'
         } catch (error) {
             console.error("Erro ao realizar login! erro:" + error)
