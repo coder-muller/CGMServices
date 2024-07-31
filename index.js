@@ -25,7 +25,6 @@ async function logIn() {
                 return
             }
             if (user.senha !== senha) {
-                usuarioInput.value = ''
                 senhaInput.value = ''
                 alert('Senha inválida para a chave fornecida')
                 return 
