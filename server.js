@@ -54,7 +54,7 @@ app.post('/usuarios', async (req, res) => {
             }
         });
         try {
-            await createLog(chave, "Adição", "usuarios", `Usuário com ID:${newUser.id} criado, nome:${newUser.nome}, permição: ${newUser.permissao}`, newUser.id, usuario)
+            await createLog(chave, "Inclusão", "usuarios", `Usuário com ID:${newUser.id} criado, nome:${newUser.nome}, permissão: ${newUser.permissao}`, newUser.id, usuario)
         } catch (error) {
             console.error(error)
         }
@@ -81,7 +81,7 @@ app.put('/usuarios/:id', async (req, res) => {
             }
         });
         try {
-            await createLog(chave, "Edição", "usuarios", `Usuário com ID:${updatedUser.id} editado, nome:${updatedUser.nome}, permição: ${updatedUser.permissao}`, updatedUser.id, usuario)
+            await createLog(chave, "Edição", "usuarios", `Usuário com ID:${updatedUser.id} editado, nome:${updatedUser.nome}, permissão: ${updatedUser.permissao}`, updatedUser.id, usuario)
         } catch (error) {
             console.error(error)
         }
@@ -101,7 +101,7 @@ app.delete('/usuarios/:id', async (req, res) => {
             },
         });
         try {
-            await createLog(chave, "Edição", "usuarios", `Usuário com ID:${deletedUser.id} deletado, nome:${deletedUser.nome}, permição: ${deletedUser.permissao}`, deletedUser.id, usuario)
+            await createLog(chave, "Exclusão", "usuarios", `Usuário com ID:${deletedUser.id} deletado, nome:${deletedUser.nome}, permissão: ${deletedUser.permissao}`, deletedUser.id, usuario)
         } catch (error) {
             console.error(error)
         }
@@ -125,12 +125,19 @@ async function createLog(chave, procedimento, tabela, log, id_registro, usuario)
                 timestamp: new Date()
             }
         })
-        return res.status(200).json(newLog)
+        return json(newLog)
     } catch (error) {
         console.error(error)
-        return res.status(500).json({ error: error.message })
+        return json({ error: error.message })
     }
 }
+
+app.get('/logs')
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+}); 
+
 
 
 
