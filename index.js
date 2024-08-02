@@ -10,7 +10,7 @@ async function logIn() {
         const usuario = usuarioInput.value
         const senha = senhaInput.value
         try {
-            const response = await fetch('https://cgmservicesweb.onrender.com/usuarios/' + chave)
+            const response = await fetch('http://localhost:4567/usuarios/' + chave)
             const users = await response.json()
             if (users.length === 0) {
                 alert('Chave não encontrada')
