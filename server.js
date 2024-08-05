@@ -94,6 +94,7 @@ app.put('/usuarios/:id', async (req, res) => {
 
 app.delete('/usuarios/:id', async (req, res) => {
     const id = req.params.id
+    const usuario = req.body.usuario
     try {
         const deletedUser = await prisma.usuarios.delete({
             where:{
@@ -101,7 +102,7 @@ app.delete('/usuarios/:id', async (req, res) => {
             },
         });
         try {
-            await createLog(chave, "Exclusão", "usuarios", `Usuário com ID: ${deletedUser.id} deletado, nome: ${deletedUser.nome}, permissão: ${deletedUser.permissao}`, deletedUser.id, usuario)
+            await createLog(deletedUser.chave, "Exclusão", "usuarios", `Usuário com ID: ${deletedUser.id} deletado, nome: ${deletedUser.nome}, permissão: ${deletedUser.permissao}`, deletedUser.id, usuario)
         } catch (error) {
             console.error(error)
         }
@@ -125,10 +126,10 @@ async function createLog(chave, procedimento, tabela, log, id_registro, usuario)
                 timestamp: new Date()
             }
         })
-        return json(newLog)
+        return 
     } catch (error) {
         console.error(error)
-        return json({ error: error.message })
+        return
     }
 }
 
