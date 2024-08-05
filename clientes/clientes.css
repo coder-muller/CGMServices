@@ -37,8 +37,8 @@ body {
 
 table {
     width: 100%;
-    border-collapse: separate; /* Importante para aplicar border-radius */
-    border-spacing: 0; /* Remove espaços entre as células */
+    border-collapse: separate; 
+    border-spacing: 0; 
 }
 
 thead, th {
@@ -51,7 +51,7 @@ thead, th {
 
 tbody {
     display: block;
-    max-height: 480px; /* Defina a altura máxima do tbody */
+    max-height: 480px;
     overflow-y: auto;
 }
 
@@ -74,7 +74,7 @@ tbody tr:hover {
     background-color: #37486613;
 }
 
-/* Removendo os cantos dos cabeçalhos */
+
 thead th:first-child {
     border-top-left-radius: 10px;
 }

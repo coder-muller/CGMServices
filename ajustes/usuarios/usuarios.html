@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="usuarios.css">
+</head>
+
+<body>
+    <header>
+        <img src="../../img/back.png" alt="voltar" onclick="window.location.href='../ajustes.html'">
+        <h1>Usuários</h1>
+    </header>
+
+    <div class="modal" id="modal">
+        <div class="conteudoModal">
+            <form id="formUser">
+                <h1>Criar Novo Usuário</h1>
+                <input type="text" id="nomeInput" placeholder="Nome" required>
+                <input type="number" id="permissaoInput" placeholder="Permissâo" required>
+                <input type="password" id="senhaInput" placeholder="Senha" required>
+                <input type="password" id="cSenhaInput" placeholder="Confirme a senha" required>
+                <div class="buttons">
+                    <button onclick="novoUsuario()">Criar Usuário</button>
+                    <button id="btVoltarModal">Voltar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <button id="novoUsuario">Criar Novo Usuário</button>
+
+    <table id="tableUsuarios">
+        <thead>
+            <tr>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 60%;">Nome</th>
+                <th style="width: 15%;">Permissão</th>
+                <th style="width: 10%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <script src="usuarios.js"></script>
+</body>
+
+</html>
