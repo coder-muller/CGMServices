@@ -1,2 +1,59 @@
 @import url(../../reset.css);
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+    font-family: 'Montserrat';
+}
+header{
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #374866;
+}
+
+header img{
+    width: 2rem;
+    cursor: pointer;
+}
+
+header h1{
+    font-size: x-large;
+    font-weight: 600;
+}
+
+header select{
+    font-size: large;
+    font-weight: 700;
+    border: 1px solid #374866;
+    border-radius: 1rem;
+    padding: 0.4rem 1rem;
+    color: #374866;
+
+}
+
+table {
+    margin: 0 auto 0 auto;
+    width: 95%;
+    border-collapse: collapse; 
+}
+
+thead, th {
+    background-color: #374866;
+    color: white;
+}
+
+th, td {
+    padding: 0.8rem;
+    text-align: center;
+}
+
+tbody td {
+    background-color: transparent;
+    border-bottom: 1px solid #374866;
+}
+
+tbody tr:hover {
+    background-color: #37486613;
+}
+

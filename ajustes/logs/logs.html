@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="logs.css">
 </head>
+
 <body>
     <header>
         <img src="../../img/back.png" alt="voltar" onclick="window.location.href='../ajustes.html'">
         <h1>LOGs</h1>
         <div class="filters">
-            <select id="operacaoSelect"></select>
+            <select id="operacaoSelect">
+                <option value="Inclusão">Inclusão</option>
+                <option value="Edição">Edição</option>
+                <option value="Exclusão">Exclusão</option>
+            </select>
         </div>
     </header>
+
+    <table id="tableLogs">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Operação</th>
+                <th style="width: 20%;">Data/Hora</th>
+                <th style="width: 10%;">Usuário</th>
+                <th style="width: 60%;">Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <script src="logs.js"></script>
 </body>
+
 </html>
