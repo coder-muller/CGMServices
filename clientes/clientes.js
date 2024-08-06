@@ -1,7 +1,8 @@
-import { parseDate, isValidDate } from '../utils.js';
+import { parseDate, isValidDate, convertIsoToDate } from '../utils.js';
 
 const tableClientes = document.getElementById('tableClientes').getElementsByTagName('tbody')[0]
 const tableClientesOver = document.getElementById('tableClientes')
+const searchInput = document.getElementById('searchInput')
 
 ////////// Modal Inclusão Cliente //////////////////////////////////////////////////////////////////////////////////
 const formClientes = document.getElementById('formClientes')
@@ -30,12 +31,16 @@ function FecharModalClientes() {
     modalClientes.style.display = 'none'
     formClientes.reset()
 }
+
+btNovoCliente.addEventListener('click', AbrirModalClientes)
+btVoltarModal.addEventListener('click', FecharModalClientes)
 formClientes.addEventListener('submit', CadastarCliente)
 
 ////////// Modal Edição Cliente //////////////////////////////////////////////////////////////////////////////////
 const formClientesEdit = document.getElementById('formClientesEdit')
 const modalClientesEdit = document.getElementById('modalClientesEdit')
 
+const btEditarCliente = document.getElementById('btEditarCliente')
 const btVoltarModalEdit = document.getElementById('btVoltarEdit')
 const btProcedimentos = document.getElementById('mostrarProcedimentos')
 const btExcluirCliente = document.getElementById('excluirCliente')
@@ -52,15 +57,35 @@ const dtNascInputEdit = document.getElementById('dtNascInputEdit')
 const profissaoInputEdit = document.getElementById('profissaoInputEdit')
 const emailInputEdit = document.getElementById('emailInputEdit')
 const foneInputEdit = document.getElementById('foneInputEdit')
+let idModalEdicao
 
-function AbrirModalClientesEdit() {
+function AbrirModalClientesEdit(cliente, id) {
     modalClientesEdit.style.display = 'block'
+    idModalEdicao = id
+
+    nomeInputEdit.value = cliente.nome
+    cpfInputEdit.value = cliente.cpf
+    enderecoInputEdit.value = cliente.endereco
+    numeroInputEdit.value = cliente.numero
+    bairroInputEdit.value = cliente.bairro
+    cidadeInputEdit.value = cliente.cidade
+    estadoInputEdit.value = cliente.estado
+    cepInputEdit.value = cliente.cep
+    dtNascInputEdit.value = convertIsoToDate(cliente.dt_nascto)
+    profissaoInputEdit.value = cliente.profissao
+    emailInputEdit.value = cliente.email
+    foneInputEdit.value = cliente.fone
 }
 function FecharModalClientesEdit() {
     modalClientesEdit.style.display = 'none'
     formClientesEdit.reset()
 }
-//formClientesEdit.addEventListener('submit', )
+
+btExcluirCliente.addEventListener('click', () => {
+    ExcluirCliente(idModalEdicao)
+})
+btVoltarModalEdit.addEventListener('click', FecharModalClientesEdit)
+btEditarCliente.addEventListener('click', EditarCliente)
 
 /////////// Funções ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -80,6 +105,9 @@ async function carregarClientes() {
             for (let i = 0; i < data.length; i++) {
                 const item = data[i]
                 const row = tableClientes.insertRow()
+                row.onclick = function() {
+                    AbrirModalClientesEdit(item, item.id);
+                };
                 const cell1 = row.insertCell(0)
                 const cell2 = row.insertCell(1)
                 const cell3 = row.insertCell(2)
@@ -210,7 +238,7 @@ async function EditarCliente(event) {
             }
 
             try {
-                const response = await fetch('http://localhost:4567/clientes', {
+                const response = await fetch('http://localhost:4567/clientes/' + idModalEdicao, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -234,6 +262,37 @@ async function EditarCliente(event) {
         }
     } else {
         formClientesEdit.reportValidity()
+    }
+}
+
+async function ExcluirCliente(id) {
+    const confirmacao = confirm('Você tem certeza que deseja excluir o cliente? Essa ação é IRREVERSÍVEL!')
+
+    if(confirmacao){
+        try {
+            const usuario = localStorage.getItem('usuarioConectado')
+            const data = {
+                usuario,
+            }
+            const response = await fetch('http://localhost:4567/clientes/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            if (response.ok) {
+                modalClientesEdit.style.display = 'none'
+                carregarClientes()
+                alert('Cliente excluido com sucesso!')
+                formClientesEdit.reset()
+            } else {
+                alert('Erro ao fazer a exclusão do cliente!')
+            }
+        } catch (error) {
+            console.error(error)
+            alert('Erro ao fazer a exclusão do cliente!')
+        }
     }
 }
 

@@ -26,3 +26,14 @@ export function isValidDate(dateStr) {
         date.getMonth() === month - 1 &&
         date.getDate() === day;
 }
+
+export function convertIsoToDate(isoDateStr) {
+    const date = new Date(isoDateStr);
+
+    // Extraindo dia, mês e ano
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() retorna 0-11
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}

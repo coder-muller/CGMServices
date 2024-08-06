@@ -121,6 +121,9 @@ app.get('/clientes/:chave', async (req, res) => {
         const allClientes = await prisma.clientes.findMany({
             where:{
                 chave:chave,
+            },
+            orderBy:{
+                nome: 'asc'
             }
         })
         return res.status(200).json(allClientes)

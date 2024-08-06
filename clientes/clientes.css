@@ -94,7 +94,7 @@ input{
 /* Modal Edição Clientes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */ 
 
 .modalClientesEdit {
-    display: block; 
+    display: none; 
     position: fixed; 
     z-index: 1; 
     left: 0;
@@ -183,8 +183,12 @@ input{
     width: 95%;
     margin: 1rem auto 0.4rem auto;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
+}
+
+.action__div input {
+    width: 20%;
 }
 
 .action__div button {

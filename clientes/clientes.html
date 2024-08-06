@@ -46,7 +46,7 @@
                 </div>
                 <div class="buttons">
                     <button type="submit">Incluir Cliente</button>
-                    <button id="btVoltar" onclick="FecharModalClientes()">Voltar</button>
+                    <button id="btVoltar">Voltar</button>
                 </div>
             </form>
         </div>
@@ -88,17 +88,18 @@
                     <input type="number" id="foneInputEdit" placeholder="Fone" required style="width: 40%;" autocomplete="off">
                 </div>
                 <div class="buttonsEdit">
-                    <button type="submit">Salvar</button>
+                    <button id="btEditarCliente">Salvar</button>
                     <button id="mostrarProcedimentos">Procedimentos</button>
-                    <button id="excluirCliente">Excluir</button>
-                    <button id="btVoltarEdit" onclick="FecharModalClientesEdit()">Voltar</button>
+                    <button id="excluirCliente" >Excluir</button>
+                    <button id="btVoltarEdit">Voltar</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div class="action__div">
-        <button id="btNovoCliente" onclick="AbrirModalClientes()">Adicionar Novo</button>
+        <input type="text" id="searchInput" placeholder="Buscar por nome" autocomplete="off">
+        <button id="btNovoCliente">Adicionar Novo</button>
     </div>
     <div class="table-container">
         <table id="tableClientes"> 
