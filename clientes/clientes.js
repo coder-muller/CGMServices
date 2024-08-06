@@ -4,6 +4,10 @@ const tableClientes = document.getElementById('tableClientes').getElementsByTagN
 const tableClientesOver = document.getElementById('tableClientes')
 const searchInput = document.getElementById('searchInput')
 
+searchInput.addEventListener('input', function() {
+    carregarClientes(this.value);
+});
+
 ////////// Modal Inclusão Cliente //////////////////////////////////////////////////////////////////////////////////
 const formClientes = document.getElementById('formClientes')
 const modalClientes = document.getElementById('modalClientes')
@@ -93,43 +97,54 @@ document.addEventListener('DOMContentLoaded', async function () {
     await carregarClientes()
 });
 
-async function carregarClientes() {
-    const chave = localStorage.getItem('chaveConectada')
+async function carregarClientes(filtroNome = '') {
+    const chave = localStorage.getItem('chaveConectada');
     try {
-        const response = await fetch('http://localhost:4567/clientes/' + chave)
+        const response = await fetch('http://localhost:4567/clientes/' + chave);
         if ((await response).ok) {
-            const data = await response.json()
+            const data = await response.json();
+
+            // Filtra os clientes se houver um filtro de nome
+            const filteredData = filtroNome
+                ? data.filter(cliente =>
+                    cliente.nome.toLowerCase().includes(filtroNome.toLowerCase())
+                )
+                : data;
+
+            // Limpa a tabela
             while (tableClientesOver.rows.length > 1) {
                 tableClientesOver.deleteRow(1);
             }
-            for (let i = 0; i < data.length; i++) {
-                const item = data[i]
-                const row = tableClientes.insertRow()
+
+            // Popula a tabela com os dados filtrados
+            for (let i = 0; i < filteredData.length; i++) {
+                const item = filteredData[i];
+                const row = tableClientes.insertRow();
                 row.onclick = function() {
                     AbrirModalClientesEdit(item, item.id);
                 };
-                const cell1 = row.insertCell(0)
-                const cell2 = row.insertCell(1)
-                const cell3 = row.insertCell(2)
-                const cell4 = row.insertCell(3)
-                const cell5 = row.insertCell(4)
-                const cell6 = row.insertCell(5)
-                const cell7 = row.insertCell(6)
-                cell1.innerHTML = item.nome
-                cell2.innerHTML = item.cpf
-                cell3.innerHTML = item.fone
-                cell4.innerHTML = item.email
-                cell5.innerHTML = new Date(item.dt_nascto).toLocaleDateString('pt-BR')
-                cell6.innerHTML = item.cidade
-                cell7.innerHTML = item.endereco
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+                const cell5 = row.insertCell(4);
+                const cell6 = row.insertCell(5);
+                const cell7 = row.insertCell(6);
+                cell1.innerHTML = item.nome;
+                cell2.innerHTML = item.cpf;
+                cell3.innerHTML = item.fone;
+                cell4.innerHTML = item.email;
+                cell5.innerHTML = new Date(item.dt_nascto).toLocaleDateString('pt-BR');
+                cell6.innerHTML = item.cidade;
+                cell7.innerHTML = item.endereco;
             }
         } else {
-            alert('Erro ao carregar clientes!')
-            console.log(response.json())
+            alert('Erro ao carregar clientes!');
+            console.log(response.json());
         }
     } catch (error) {
-        console.log(error)
-        alert('Erro ao carregar usuários!')
+        console.log(error);
+        alert('Erro ao carregar usuários!');
     }
 }
 
@@ -182,7 +197,6 @@ async function CadastarCliente(event) {
                 if (response.ok) {
                     modalClientes.style.display = 'none'
                     carregarClientes()
-                    alert('Cliente criado com sucesso!')
                     formClientes.reset()
                 } else {
                     alert('Erro ao criar cliente!')
@@ -248,7 +262,6 @@ async function EditarCliente(event) {
                 if (response.ok) {
                     modalClientesEdit.style.display = 'none'
                     carregarClientes()
-                    alert('Cliente editado com sucesso!')
                     formClientesEdit.reset()
                 } else {
                     alert('Erro ao editar cliente!')
@@ -267,7 +280,6 @@ async function EditarCliente(event) {
 
 async function ExcluirCliente(id) {
     const confirmacao = confirm('Você tem certeza que deseja excluir o cliente? Essa ação é IRREVERSÍVEL!')
-
     if(confirmacao){
         try {
             const usuario = localStorage.getItem('usuarioConectado')
@@ -281,17 +293,8 @@ async function ExcluirCliente(id) {
                 },
                 body: JSON.stringify(data)
             })
-            if (response.ok) {
-                modalClientesEdit.style.display = 'none'
-                carregarClientes()
-                alert('Cliente excluido com sucesso!')
-                formClientesEdit.reset()
-            } else {
-                alert('Erro ao fazer a exclusão do cliente!')
-            }
         } catch (error) {
             console.error(error)
-            alert('Erro ao fazer a exclusão do cliente!')
         }
     }
 }

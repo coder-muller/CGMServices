@@ -152,7 +152,6 @@ app.get('/clientes/:chave/:id', async (req, res) => {
 
 app.post('/clientes', async (req, res) => {
     const { chave, nome, cpf, endereco, numero, bairro, cidade, estado, cep, dt_nascto, profissao, email, fone, usuario } = req.body
-    console.log(req.body)
     try {
         const newCliente = await prisma.clientes.create({
             data: {
@@ -222,6 +221,7 @@ app.put('/clientes/:id', async (req, res) => {
 app.delete('/clientes/:id', async (req, res) => {
     const id = req.params.id
     const usuario = req.body.usuario
+    console.log(req.body)
     try {
         const deletedCliente = await prisma.clientes.delete({
             where:{
