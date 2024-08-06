@@ -5,6 +5,7 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+/* Modal Inclusão Clientes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 .modalClientes {
     display: none; 
@@ -57,7 +58,7 @@ input{
 }
 
 .buttons{
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,6 +90,94 @@ input{
     padding: 0.5rem;
     cursor: pointer ;
 }
+
+/* Modal Edição Clientes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */ 
+
+.modalClientesEdit {
+    display: block; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px; 
+}
+
+.modalClientesEdit form{
+    background-color: #ffffff;
+    color: #374866;
+    margin: 3% auto 1rem auto;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 1rem;
+    padding: 0.8rem;
+}
+
+.modalClientesEdit form h1{
+    color: #374866;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.modalLinha{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.modalClientesEdit input{
+    width: 100%;
+    outline: none;
+    border: 1px solid #37486376;
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.buttonsEdit{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.buttonsEdit button{
+    width: 30%;
+    outline: none;
+    font-weight: 600;
+    background-color: #f39236;
+    border: 1px solid #f39236;
+    color: #ffffff;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    cursor: pointer ;
+}
+
+#btVoltarEdit{
+    width: 10%;
+    outline: none;
+    font-weight: 600;
+    background-color: transparent;
+    border: 1px solid #374866;
+    color: #374866;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    cursor: pointer ;
+}
+
+/* Tabela de Clientes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */ 
 
 .action__div {
     width: 95%;

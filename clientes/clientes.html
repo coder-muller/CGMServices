@@ -9,10 +9,10 @@
 </head>
 <body>
 
-    <div class="modalClientes">
+    <div class="modalClientes" id="modalClientes">
         <div class="modalClientesConteudo">
             <form id="formClientes">
-                <h1>Cliente</h1>
+                <h1>Novo Cliente</h1>
                 <div class="modalLinha">
                     <input type="text" id="nomeInput" placeholder="Nome" required style="width: 70%;" autocomplete="off">
                     <input type="number" id="cpfInput" placeholder="CPF" style="width: 30%;" autocomplete="off">
@@ -37,7 +37,7 @@
                         this.value = v + '/';
                     } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
                         this.value = v + '/';
-                    }" maxlength="10" autocomplete="off">
+                    }" maxlength="10" autocomplete="off" required>
                     <input type="text" id="profissaoInput" placeholder="Profissão" style="width: 60%;" autocomplete="off">
                 </div>
                 <div class="modalLinha">
@@ -45,15 +45,60 @@
                     <input type="number" id="foneInput" placeholder="Fone" required style="width: 40%;" autocomplete="off">
                 </div>
                 <div class="buttons">
-                    <button >Salvar Cliente</button>
-                    <button id="btVoltar">Voltar</button>
+                    <button type="submit">Incluir Cliente</button>
+                    <button id="btVoltar" onclick="FecharModalClientes()">Voltar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modalClientesEdit" id="modalClientesEdit">
+        <div class="modalClientesConteudoEdit">
+            <form id="formClientesEdit">
+                <h1>Cliente</h1>
+                <div class="modalLinha">
+                    <input type="text" id="nomeInputEdit" placeholder="Nome" required style="width: 70%;" autocomplete="off">
+                    <input type="number" id="cpfInputEdit" placeholder="CPF" style="width: 30%;" autocomplete="off">
+                </div>
+                <div class="modalLinha">
+                    <input type="text" id="enderecoInputEdit" placeholder="Endereço" style="width: 80%;" autocomplete="off">
+                    <input type="number" id="numeroInputEdit" placeholder="Número" style="width: 20%;" autocomplete="off">
+                </div>
+                <div class="modalLinha">
+                    <input type="text" id="bairroInputEdit" placeholder="Bairro" style="width: 50%;" autocomplete="off">
+                    <input type="text" id="cidadeInputEdit" placeholder="Cidade" style="width: 50%;" autocomplete="off">
+                </div>
+                <div class="modalLinha">
+                    <input type="text" id="estadoInputEdit" placeholder="Estado" style="width: 50%;" autocomplete="off">
+                    <input type="number" id="cepInputEdit" placeholder="CEP" style="width: 50%;" autocomplete="off">
+                </div>
+                <div class="modalLinha">
+                    <input type="text" id="dtNascInputEdit" placeholder="Data Nascimento" style="width: 40%;"
+                    onkeyup="
+                    var v = this.value;
+                    if (v.match(/^\d{2}$/) !== null) {
+                        this.value = v + '/';
+                    } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+                        this.value = v + '/';
+                    }" maxlength="10" autocomplete="off" required>
+                    <input type="text" id="profissaoInputEdit" placeholder="Profissão" style="width: 60%;" autocomplete="off">
+                </div>
+                <div class="modalLinha">
+                    <input type="email" id="emailInputEdit" placeholder="Email" style="width: 60%;" autocomplete="off">
+                    <input type="number" id="foneInputEdit" placeholder="Fone" required style="width: 40%;" autocomplete="off">
+                </div>
+                <div class="buttonsEdit">
+                    <button type="submit">Salvar</button>
+                    <button id="mostrarProcedimentos">Procedimentos</button>
+                    <button id="excluirCliente">Excluir</button>
+                    <button id="btVoltarEdit" onclick="FecharModalClientesEdit()">Voltar</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div class="action__div">
-        <button id="btNovoCliente">Adicionar Novo</button>
+        <button id="btNovoCliente" onclick="AbrirModalClientes()">Adicionar Novo</button>
     </div>
     <div class="table-container">
         <table id="tableClientes"> 
@@ -69,28 +114,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Maria Silva</td>
-                    <td>123.456.789-00</td>
-                    <td>(11) 91234-5678</td>
-                    <td>maria.silva@example.com</td>
-                    <td>10/02/1985</td>
-                    <td>São Paulo</td>
-                    <td>Av. Paulista, 1000</td>
-                </tr>
-                <tr>
-                    <td>João Souza</td>
-                    <td>987.654.321-00</td>
-                    <td>(21) 99876-5432</td>
-                    <td>joao.souza@example.com</td>
-                    <td>15/08/1990</td>
-                    <td>Rio de Janeiro</td>
-                    <td>Rua das Laranjeiras, 123</td>
-                </tr>
             </tbody>
         </table>
     </div>
 
-    <script src="clientes.js"></script>
+    <script type="module" src="clientes.js"></script>
 </body>
 </html>
