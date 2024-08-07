@@ -242,6 +242,91 @@ app.delete('/clientes/:id', async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+app.get('/procedimentos/:chave', async (req, res) => {
+    const chave = req.params.chave
+    try {
+        const all = await prisma.procedimentos.findMany({
+            where:{
+                chave:chave,
+            }
+        })
+        return res.status(200).json(all)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }
+})
+
+app.post('/procedimentos', async (req, res) => {
+    const { chave, procedimento, usuario } = req.body
+    try {
+        const newPro = await prisma.procedimentos.create({
+            data: {
+                chave,
+                procedimento,
+            }
+        });
+        try {
+            await createLog(chave, "Inclusão", "procedimentos", `Procedimentos com ID: ${newPro.id} criado, procedimento: ${newPro.procedimento}`, newPro.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(newPro)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.put('/procedimentos/:id', async (req, res) => {
+    const id = req.params.id
+    const { chave, procedimento, usuario } = req.body
+    try {
+        const updatedPro = await prisma.procedimentos.update({
+            where:{
+                id:parseInt(id)
+            },
+            data: {
+                chave,
+                procedimento,
+            }
+        });
+        try {
+            await createLog(chave, "Edição", "procedimentos", `Procedimento com ID: ${updatedPro.id} editado, procedimento: ${updatedPro.procedimento}`, updatedPro.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(updatedPro)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.delete('/procedimentos/:id', async (req, res) => {
+    const id = req.params.id
+    const usuario = req.body.usuario
+    try {
+        const deletedPro = await prisma.procedimentos.delete({
+            where:{
+                id:parseInt(id)
+            },
+        });
+        try {
+            await createLog(deletedPro.chave, "Exclusão", "procedimentos", `Procedimento com ID: ${deletedPro.id} deletado, procedimento: ${deletedPro.procedimento}`, deletedPro.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(deletedPro)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 async function createLog(chave, procedimento, tabela, log, id_registro, usuario){
     try {
