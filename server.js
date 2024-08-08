@@ -326,6 +326,192 @@ app.delete('/procedimentos/:id', async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+app.get('/setores/:chave', async (req, res) => {
+    const chave = req.params.chave
+    try {
+        const all = await prisma.setores.findMany({
+            where:{
+                chave:chave,
+            }
+        })
+        return res.status(200).json(all)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }
+})
+
+app.get('/setores/:chave/:id', async (req, res) => {
+    const chave = req.params.chave
+    const id = req.params.id
+    try {
+        const all = await prisma.setores.findMany({
+            where:{
+                chave:chave,
+                id: parseInt(id)
+            }
+        })
+        return res.status(200).json(all)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }
+})
+
+app.post('/setores', async (req, res) => {
+    const { chave, setor, usuario } = req.body
+    try {
+        const newSetor = await prisma.setores.create({
+            data: {
+                chave,
+                setor,
+            }
+        });
+        try {
+            await createLog(chave, "Inclusão", "setores", `Setor com ID: ${newSetor.id} criado, setor: ${newSetor.setor}`, newSetor.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(newSetor)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.put('/setores/:id', async (req, res) => {
+    const id = req.params.id
+    const { chave, setor, usuario } = req.body
+    try {
+        const updatedSetor = await prisma.setores.update({
+            where:{
+                id:parseInt(id)
+            },
+            data: {
+                chave,
+                setor,
+            }
+        });
+        try {
+            await createLog(chave, "Edição", "setores", `Setor com ID: ${updatedSetor.id} editado, setor: ${updatedSetor.setor}`, updatedSetor.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(updatedSetor)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.delete('/setores/:id', async (req, res) => {
+    const id = req.params.id
+    const usuario = req.body.usuario
+    try {
+        const deletedSetor = await prisma.setores.delete({
+            where:{
+                id:parseInt(id)
+            },
+        });
+        try {
+            await createLog(deletedPro.chave, "Exclusão", "setores", `Setor com ID: ${deletedSetor.id} deletado, setor: ${deletedSetor.setor}`, deletedSetor.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(deletedSetor)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/profissionais/:chave', async (req, res) => {
+    const chave = req.params.chave
+    try {
+        const all = await prisma.profissionais.findMany({
+            where:{
+                chave:chave,
+            }
+        })
+        return res.status(200).json(all)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }
+})
+
+app.post('/profissionais', async (req, res) => {
+    const { chave, profissional, id_setor, usuario } = req.body
+    try {
+        const newProfissional = await prisma.profissionais.create({
+            data: {
+                chave,
+                profissional,
+                id_setor: parseInt(id_setor),
+            }
+        });
+        try {
+            await createLog(chave, "Inclusão", "profissionais", `Profissional com ID: ${newProfissional.id} criado, nome: ${newProfissional.profissional}`, newProfissional.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(newProfissional)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.put('/profissionais/:id', async (req, res) => {
+    const id = req.params.id
+    const { chave, profissional, id_setor, usuario } = req.body
+    try {
+        const updatedProfissional = await prisma.profissionais.update({
+            where:{
+                id:parseInt(id)
+            },
+            data: {
+                chave,
+                profissional,
+                id_setor: parseInt(id_setor),
+            }
+        });
+        try {
+            await createLog(chave, "Edição", "profissionais", `Profissional com ID: ${updatedProfissional.id} editado, nome: ${updatedProfissional.profissional}`, updatedProfissional.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(updatedProfissional)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.delete('/profissionais/:id', async (req, res) => {
+    const id = req.params.id
+    const usuario = req.body.usuario
+    try {
+        const deletedProfissional = await prisma.profissionais.delete({
+            where:{
+                id:parseInt(id)
+            },
+        });
+        try {
+            await createLog(deletedProfissional.chave, "Exclusão", "profissionais", `Profissional com ID: ${deletedProfissional.id} deletado, nome: ${deletedProfissional.profissional}`, deletedProfissional.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(deletedProfissional)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 async function createLog(chave, procedimento, tabela, log, id_registro, usuario){

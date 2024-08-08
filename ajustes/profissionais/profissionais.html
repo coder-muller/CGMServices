@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="profissionais.css">
+</head>
+<body>
+    <header>
+        <img src="../../img/back.png" alt="voltar" onclick="window.location.href='../ajustes.html'">
+        <h1>Profissionais</h1>
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Pesquisar...">
+            <select id="profissionaisSelect">
+                <option value="Inclusão">Todos</option>
+                <option value="Inclusão">Inclusão</option>
+                <option value="Edição">Edição</option>
+                <option value="Exclusão">Exclusão</option>
+            </select>
+            <button id="novoProfissional">Novo</button>
+        </div>
+    </header>
+
+    <div class="modal" id="modal">
+        <form id="formProfissionais">
+            <input type="text" id="profissionalInput" placeholder="Nome do profissional" autocomplete="off" required>
+            <select id="setoresSelect">
+            </select>
+            <div class="buttons">
+                <button id="cadastarProfissional">Salvar</button>
+                <button id="btVoltarModal">Voltar</button>
+            </div>
+        </form>
+    </div>
+
+    <table id="tableProfissionais">
+        <thead>
+            <tr>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 45%;">Nome</th>
+                <th style="width: 40%;">Setor</th>
+                <th style="width: 5%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script src="profissionais.js"></script>
+</body>
+</html>

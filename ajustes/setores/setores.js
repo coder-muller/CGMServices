@@ -1,23 +1,22 @@
 const modal = document.getElementById('modal')
-const form = document.getElementById('formProcedimento')
-const btNovo = document.getElementById('novoProcedimento')
+const form = document.getElementById('formSetores')
+const btNovo = document.getElementById('novoSetor')
 
-const procedimentoInput = document.getElementById('procedimentoInput')
-const btcadastrar = document.getElementById('cadastarProcedimento')
+const setorInput = document.getElementById('setorInput')
+const btcadastrar = document.getElementById('cadastarSetor')
 const btvoltar = document.getElementById('btVoltarModal')
 
-const table = document.getElementById('tableProcedimentos')
-const tableTbody = document.getElementById('tableProcedimentos').getElementsByTagName('tbody')[0]
+const table = document.getElementById('tableSetores')
+const tableTbody = document.getElementById('tableSetores').getElementsByTagName('tbody')[0]
 
 let isEdit = false;
 let editId = null;
 
-function AbrirModal(mode, procedimento = '') {
+function AbrirModal(mode, setor = '') {
     modal.style.display = 'block'
     isEdit = (mode === 1);
-    procedimentoInput.value = procedimento;
-    btcadastrar.textContent = isEdit ? 'Editar' : 'Cadastrar';
-    procedimentoInput.focus()
+    setorInput.value = setor;
+    setorInput.focus()
 }
 
 function FecharModal() {
@@ -25,7 +24,6 @@ function FecharModal() {
     form.reset()
     isEdit = false;
     editId = null;
-    btcadastrar.textContent = 'Cadastrar';
 }
 
 btNovo.addEventListener('click', () => AbrirModal(0));
@@ -33,13 +31,13 @@ btvoltar.addEventListener('click', FecharModal)
 btcadastrar.addEventListener('click', Cadastrar)
 
 document.addEventListener('DOMContentLoaded', async function () {
-    await carregarProcedimentos()
+    await carregarSetores()
 });
 
-async function carregarProcedimentos() {
+async function carregarSetores() {
     const chave = localStorage.getItem('chaveConectada');
     try {
-        const response = await fetch('http://localhost:4567/procedimentos/' + chave);
+        const response = await fetch('http://localhost:4567/setores/' + chave);
         if ((await response).ok) {
             const data = await response.json();
             while (table.rows.length > 1) {
@@ -49,14 +47,14 @@ async function carregarProcedimentos() {
                 const item = data[i];
                 const row = tableTbody.insertRow();
                 row.onclick = function () {
-                    AbrirModal(1, item.procedimento);
+                    AbrirModal(1, item.setor);
                     editId = item.id;
                 };
                 const cell1 = row.insertCell(0);
                 const cell2 = row.insertCell(1);
                 const cell3 = row.insertCell(2);
                 cell1.innerHTML = item.id;
-                cell2.innerHTML = item.procedimento;
+                cell2.innerHTML = item.setor;
                 const trashIcon = document.createElement('img');
                 trashIcon.src = "../../img/trash.png";
                 trashIcon.alt = "excluir";
@@ -67,12 +65,12 @@ async function carregarProcedimentos() {
                 cell3.appendChild(trashIcon);
             }
         } else {
-            alert('Erro ao carregar procedimentos!');
+            alert('Erro ao carregar setores!');
             console.log(response.json());
         }
     } catch (error) {
         console.log(error);
-        alert('Erro ao carregar procedimentos!');
+        alert('Erro ao carregar setores!');
     }
 }
 
@@ -80,16 +78,16 @@ async function Cadastrar(event) {
     event.preventDefault();
     if (form.checkValidity()) {
         try {
-            const procedimento = procedimentoInput.value
+            const setor = setorInput.value
             const chave = localStorage.getItem('chaveConectada')
             const usuario = localStorage.getItem('usuarioConectado')
             const data = {
                 chave,
-                procedimento,
+                setor,
                 usuario,
             }
             const method = isEdit ? 'PUT' : 'POST';
-            const url = isEdit ? 'http://localhost:4567/procedimentos/' + editId : 'http://localhost:4567/procedimentos';
+            const url = isEdit ? 'http://localhost:4567/setores/' + editId : 'http://localhost:4567/setores';
             const response = await fetch(url, {
                 method: method,
                 headers: {
@@ -98,10 +96,10 @@ async function Cadastrar(event) {
                 body: JSON.stringify(data)
             })
             if (response.ok) {
-                carregarProcedimentos()
+                carregarSetores()
                 modal.style.display = 'none'
             } else {
-                alert('Erro ao cadastrar/editar procedimento no banco de dados!')
+                alert('Erro ao cadastrar/editar setor no banco de dados!')
                 modal.style.display = 'none'
             }
         } catch (error) {
@@ -113,14 +111,14 @@ async function Cadastrar(event) {
 }
 
 async function Deletar(id) {
-    const confirmacao = confirm('Você tem certeza que deseja apagar esse procedimento?')
+    const confirmacao = confirm('Você tem certeza que deseja apagar esse setor?')
     if (confirmacao) {
         try {
             const usuario = localStorage.getItem('usuarioConectado')
             const data = {
                 usuario,
             }
-            const response = await fetch('http://localhost:4567/procedimentos/' + id, {
+            const response = await fetch('http://localhost:4567/setores/' + id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -128,9 +126,9 @@ async function Deletar(id) {
                 body: JSON.stringify(data)
             })
             if (response.ok) {
-                carregarProcedimentos()
+                carregarSetores()
             } else {
-                alert('Erro ao deletar procedimento no banco de dados!')
+                alert('Erro ao deletar setor no banco de dados!')
             }
         } catch (error) {
             console.error(error)

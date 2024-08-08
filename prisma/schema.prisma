@@ -62,6 +62,23 @@ model avaliacoes {
   updatedAt       DateTime @updatedAt
 }
 
+model setores {
+  id        Int      @id @unique @default(autoincrement())
+  chave     String
+  setor     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model profissionais {
+  id           Int      @id @unique @default(autoincrement())
+  chave        String
+  profissional String
+  id_setor     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model logs {
   id           Int      @id @unique @default(autoincrement())
   chave        String

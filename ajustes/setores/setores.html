@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="setores.css">
+</head>
+
+<body>
+    <header>
+        <img src="../../img/back.png" alt="voltar" onclick="window.location.href='../ajustes.html'">
+        <h1>Setores</h1>
+        <button id="novoSetor">Novo</button>
+    </header>
+
+    <div class="modal" id="modal">
+        <form id="formSetores">
+            <input type="text" id="setorInput" placeholder="Nome do setor" autocomplete="off" required>
+            <div class="buttons">
+                <button id="cadastarSetor">Salvar</button>
+                <button id="btVoltarModal">Voltar</button>
+            </div>
+        </form>
+    </div>
+
+    <table id="tableSetores">
+        <thead>
+            <tr>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 70%;">Setor</th>
+                <th style="width: 15%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script src="setores.js"></script>
+</body>
+
+</html>

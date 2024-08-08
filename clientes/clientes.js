@@ -86,7 +86,7 @@ function FecharModalClientesEdit() {
 }
 
 btExcluirCliente.addEventListener('click', () => {
-    ExcluirCliente(idModalEdicao)
+    ExcluirCliente(idModalEdicao, event)
 })
 btVoltarModalEdit.addEventListener('click', FecharModalClientesEdit)
 btEditarCliente.addEventListener('click', EditarCliente)
@@ -278,7 +278,8 @@ async function EditarCliente(event) {
     }
 }
 
-async function ExcluirCliente(id) {
+async function ExcluirCliente(id, event) {
+    event.preventDefault()
     const confirmacao = confirm('Você tem certeza que deseja excluir o cliente? Essa ação é IRREVERSÍVEL!')
     if(confirmacao){
         try {
