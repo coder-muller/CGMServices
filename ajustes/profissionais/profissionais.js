@@ -2,8 +2,6 @@ const modal = document.getElementById('modal');
 const form = document.getElementById('formProfissionais');
 const btNovo = document.getElementById('novoProfissional');
 
-const profissionalInput = document.getElementById('profissionalInput');
-const setoresSelect = document.getElementById('setoresSelect');
 const btcadastrar = document.getElementById('cadastarProfissional');
 const btvoltar = document.getElementById('btVoltarModal');
 
