@@ -1,10 +1,10 @@
-import { parseDate, isValidDate, convertIsoToDate } from '../utils.js';
+import { parseDate, isValidDate, convertIsoToDate, sendGet, sendPost, sendPut, sendDelete } from '../utils.js';
 
 const tableClientes = document.getElementById('tableClientes').getElementsByTagName('tbody')[0]
 const tableClientesOver = document.getElementById('tableClientes')
 const searchInput = document.getElementById('searchInput')
 
-searchInput.addEventListener('input', function() {
+searchInput.addEventListener('input', function () {
     carregarClientes(this.value);
 });
 
@@ -80,7 +80,7 @@ function AbrirModalClientesEdit(cliente, id) {
     emailInputEdit.value = cliente.email
     foneInputEdit.value = cliente.fone
 }
-function    FecharModalClientesEdit() {
+function FecharModalClientesEdit() {
     modalClientesEdit.style.display = 'none'
     formClientesEdit.reset()
 }
@@ -99,46 +99,35 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 async function carregarClientes(filtroNome = '') {
     const chave = localStorage.getItem('chaveConectada');
-    try {
-        const response = await fetch('http://localhost:4567/clientes/' + chave);
-        if ((await response).ok) {
-            const data = await response.json();
-            const filteredData = filtroNome
-                ? data.filter(cliente =>
-                    cliente.nome.toLowerCase().includes(filtroNome.toLowerCase())
-                )
-                : data;
-            while (tableClientesOver.rows.length > 1) {
-                tableClientesOver.deleteRow(1);
-            }
-            for (let i = 0; i < filteredData.length; i++) {
-                const item = filteredData[i];
-                const row = tableClientes.insertRow();
-                row.onclick = function() {
-                    AbrirModalClientesEdit(item, item.id);
-                };
-                const cell1 = row.insertCell(0);
-                const cell2 = row.insertCell(1);
-                const cell3 = row.insertCell(2);
-                const cell4 = row.insertCell(3);
-                const cell5 = row.insertCell(4);
-                const cell6 = row.insertCell(5);
-                const cell7 = row.insertCell(6);
-                cell1.innerHTML = item.nome;
-                cell2.innerHTML = item.cpf;
-                cell3.innerHTML = item.fone;
-                cell4.innerHTML = item.email;
-                cell5.innerHTML = new Date(item.dt_nascto).toLocaleDateString('pt-BR');
-                cell6.innerHTML = item.cidade;
-                cell7.innerHTML = item.endereco;
-            }
-        } else {
-            alert('Erro ao carregar clientes!');
-            console.log(response.json());
-        }
-    } catch (error) {
-        console.log(error);
-        alert('Erro ao carregar usuários!');
+    const data = await sendGet('/clientes/' + chave)
+    const filteredData = filtroNome
+        ? data.filter(cliente =>
+            cliente.nome.toLowerCase().includes(filtroNome.toLowerCase())
+        )
+        : data;
+    while (tableClientesOver.rows.length > 1) {
+        tableClientesOver.deleteRow(1);
+    }
+    for (let i = 0; i < filteredData.length; i++) {
+        const item = filteredData[i];
+        const row = tableClientes.insertRow();
+        row.onclick = function () {
+            AbrirModalClientesEdit(item, item.id);
+        };
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        const cell5 = row.insertCell(4);
+        const cell6 = row.insertCell(5);
+        const cell7 = row.insertCell(6);
+        cell1.innerHTML = item.nome;
+        cell2.innerHTML = item.cpf;
+        cell3.innerHTML = item.fone;
+        cell4.innerHTML = item.email;
+        cell5.innerHTML = new Date(item.dt_nascto).toLocaleDateString('pt-BR');
+        cell6.innerHTML = item.cidade;
+        cell7.innerHTML = item.endereco;
     }
 }
 
@@ -179,26 +168,14 @@ async function CadastarCliente(event) {
                 fone,
                 usuario,
             }
-
-            try {
-                const response = await fetch('http://localhost:4567/clientes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                if (response.ok) {
-                    modalClientes.style.display = 'none'
-                    carregarClientes()
-                    formClientes.reset()
-                } else {
-                    alert('Erro ao criar cliente!')
-                }
-            } catch (error) {
-                console.error(error)
+            const response = await sendPost('/clientes', data)
+            if (response.ok) {
+                modalClientes.style.display = 'none'
+                carregarClientes()
+                formClientes.reset()
+            } else {
+                alert('Erro ao criar cliente!')
             }
-
         } else {
             alert('Data Inválida')
         }
@@ -244,26 +221,14 @@ async function EditarCliente(event) {
                 fone,
                 usuario,
             }
-
-            try {
-                const response = await fetch('http://localhost:4567/clientes/' + idModalEdicao, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                if (response.ok) {
-                    modalClientesEdit.style.display = 'none'
-                    carregarClientes()
-                    formClientesEdit.reset()
-                } else {
-                    alert('Erro ao editar cliente!')
-                }
-            } catch (error) {
-                console.error(error)
+            const response = await sendPut('/clientes/' + idModalEdicao, data)
+            if (response.ok) {
+                modalClientesEdit.style.display = 'none'
+                carregarClientes()
+                formClientesEdit.reset()
+            } else {
+                alert('Erro ao editar cliente!')
             }
-
         } else {
             alert('Data Inválida')
         }
@@ -274,27 +239,15 @@ async function EditarCliente(event) {
 
 async function ExcluirCliente(id, event) {
     event.preventDefault()
+
     const confirmacao = confirm('Você tem certeza que deseja excluir o cliente? Essa ação é IRREVERSÍVEL!')
-    if(confirmacao){
-        try {
-            const usuario = localStorage.getItem('usuarioConectado')
-            const data = {
-                usuario,
-            }
-            const response = await fetch('http://localhost:4567/clientes/' + id, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            FecharModalClientesEdit()
-            carregarClientes()
-        } catch (error) {
-            console.error(error)
+    if (confirmacao) {
+        const usuario = localStorage.getItem('usuarioConectado')
+        const data = {
+            usuario,
         }
+        await sendDelete('/clientes/' + id, data)
+        FecharModalClientesEdit()
+        carregarClientes()
     }
 }
-
-
-
