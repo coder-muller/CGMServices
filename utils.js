@@ -1,3 +1,5 @@
+const BASE_URL = 'http://localhost:4567'
+
 export function parseDate(dateStr) {
     const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
     const match = dateStr.match(regex);
@@ -36,4 +38,83 @@ export function convertIsoToDate(isoDateStr) {
     const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
+}
+
+export async function sendGet(rota) {
+    try {
+        const responseData = await fetch(BASE_URL + rota, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        })
+        if (responseData.ok) {
+            const data = await responseData.json()
+            return data
+        } else {
+            console.error('Erro no retorno do servidor!')
+        }
+    } catch (error) {
+        console.error('Erro na conexão com o servidor!', error)
+    }
+}
+
+export async function sendPost(rota, body) {
+    try {
+        const responseData = await fetch(BASE_URL + rota, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+        if (responseData.ok) {
+            const data = await responseData.json()
+            return data
+        } else {
+            console.error('Erro no retorno do servidor!')
+        }
+    } catch (error) {
+        console.error('Erro na conexão com o servidor!', error)
+    }
+}
+
+export async function sendPut(rota, body) {
+    try {
+        const responseData = await fetch(BASE_URL + rota, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(body)
+        })
+        if (responseData.ok) {
+            const data = await responseData.json()
+            return data
+        } else {
+            console.error('Erro no retorno do servidor!')
+        }
+    } catch (error) {
+        console.error('Erro na conexão com o servidor!', error)
+    }
+}
+
+export async function sendDelete(rota, body) {
+    try {
+        const responseData = await fetch(BASE_URL + rota, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE',
+            body: JSON.stringify(body)
+        })
+        if (responseData.ok) {
+            const data = await responseData.json()
+            return data
+        } else {
+            console.error('Erro no retorno do servidor!')
+        }
+    } catch (error) {
+        console.error('Erro na conexão com o servidor!', error)
+    }
 }

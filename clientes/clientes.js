@@ -80,7 +80,7 @@ function AbrirModalClientesEdit(cliente, id) {
     emailInputEdit.value = cliente.email
     foneInputEdit.value = cliente.fone
 }
-function FecharModalClientesEdit() {
+function    FecharModalClientesEdit() {
     modalClientesEdit.style.display = 'none'
     formClientesEdit.reset()
 }
@@ -103,20 +103,14 @@ async function carregarClientes(filtroNome = '') {
         const response = await fetch('http://localhost:4567/clientes/' + chave);
         if ((await response).ok) {
             const data = await response.json();
-
-            // Filtra os clientes se houver um filtro de nome
             const filteredData = filtroNome
                 ? data.filter(cliente =>
                     cliente.nome.toLowerCase().includes(filtroNome.toLowerCase())
                 )
                 : data;
-
-            // Limpa a tabela
             while (tableClientesOver.rows.length > 1) {
                 tableClientesOver.deleteRow(1);
             }
-
-            // Popula a tabela com os dados filtrados
             for (let i = 0; i < filteredData.length; i++) {
                 const item = filteredData[i];
                 const row = tableClientes.insertRow();
@@ -294,6 +288,8 @@ async function ExcluirCliente(id, event) {
                 },
                 body: JSON.stringify(data)
             })
+            FecharModalClientesEdit()
+            carregarClientes()
         } catch (error) {
             console.error(error)
         }
