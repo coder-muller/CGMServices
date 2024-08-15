@@ -169,7 +169,7 @@ async function CadastarCliente(event) {
                 usuario,
             }
             const response = await sendPost('/clientes', data)
-            if (response.ok) {
+            if (response) {
                 modalClientes.style.display = 'none'
                 carregarClientes()
                 formClientes.reset()
@@ -222,7 +222,7 @@ async function EditarCliente(event) {
                 usuario,
             }
             const response = await sendPut('/clientes/' + idModalEdicao, data)
-            if (response.ok) {
+            if (response) {
                 modalClientesEdit.style.display = 'none'
                 carregarClientes()
                 formClientesEdit.reset()
