@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CGM Services</title>
     <link rel="stylesheet" href="clientes.css">
 </head>
+
 <body>
+
     <div class="modalClientes" id="modalClientes">
         <div class="modalClientesConteudo">
             <form id="formClientes">
                 <h1>Novo Cliente</h1>
                 <div class="modalLinha">
-                    <input type="text" id="nomeInput" placeholder="Nome" required style="width: 70%;" autocomplete="off">
+                    <input type="text" id="nomeInput" placeholder="Nome" required style="width: 70%;"
+                        autocomplete="off">
                     <input type="number" id="cpfInput" placeholder="CPF" style="width: 30%;" autocomplete="off">
                 </div>
                 <div class="modalLinha">
@@ -28,19 +32,20 @@
                     <input type="number" id="cepInput" placeholder="CEP" style="width: 50%;" autocomplete="off">
                 </div>
                 <div class="modalLinha">
-                    <input type="text" id="dtNascInput" placeholder="Data Nascimento" style="width: 40%;"
-                    onkeyup="
+                    <input type="text" id="dtNascInput" placeholder="Data Nascimento" style="width: 40%;" onkeyup="
                     var v = this.value;
                     if (v.match(/^\d{2}$/) !== null) {
                         this.value = v + '/';
                     } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
                         this.value = v + '/';
                     }" maxlength="10" autocomplete="off" required>
-                    <input type="text" id="profissaoInput" placeholder="Profissão" style="width: 60%;" autocomplete="off">
+                    <input type="text" id="profissaoInput" placeholder="Profissão" style="width: 60%;"
+                        autocomplete="off">
                 </div>
                 <div class="modalLinha">
                     <input type="email" id="emailInput" placeholder="Email" style="width: 60%;" autocomplete="off">
-                    <input type="number" id="foneInput" placeholder="Fone" required style="width: 40%;" autocomplete="off">
+                    <input type="number" id="foneInput" placeholder="Fone" required style="width: 40%;"
+                        autocomplete="off">
                 </div>
                 <div class="buttons">
                     <button type="submit">Incluir Cliente</button>
@@ -54,12 +59,15 @@
             <form id="formClientesEdit">
                 <h1>Cliente</h1>
                 <div class="modalLinha">
-                    <input type="text" id="nomeInputEdit" placeholder="Nome" required style="width: 70%;" autocomplete="off">
+                    <input type="text" id="nomeInputEdit" placeholder="Nome" required style="width: 70%;"
+                        autocomplete="off">
                     <input type="number" id="cpfInputEdit" placeholder="CPF" style="width: 30%;" autocomplete="off">
                 </div>
                 <div class="modalLinha">
-                    <input type="text" id="enderecoInputEdit" placeholder="Endereço" style="width: 80%;" autocomplete="off">
-                    <input type="number" id="numeroInputEdit" placeholder="Número" style="width: 20%;" autocomplete="off">
+                    <input type="text" id="enderecoInputEdit" placeholder="Endereço" style="width: 80%;"
+                        autocomplete="off">
+                    <input type="number" id="numeroInputEdit" placeholder="Número" style="width: 20%;"
+                        autocomplete="off">
                 </div>
                 <div class="modalLinha">
                     <input type="text" id="bairroInputEdit" placeholder="Bairro" style="width: 50%;" autocomplete="off">
@@ -70,35 +78,83 @@
                     <input type="number" id="cepInputEdit" placeholder="CEP" style="width: 50%;" autocomplete="off">
                 </div>
                 <div class="modalLinha">
-                    <input type="text" id="dtNascInputEdit" placeholder="Data Nascimento" style="width: 40%;"
-                    onkeyup="
+                    <input type="text" id="dtNascInputEdit" placeholder="Data Nascimento" style="width: 40%;" onkeyup="
                     var v = this.value;
                     if (v.match(/^\d{2}$/) !== null) {
                         this.value = v + '/';
                     } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
                         this.value = v + '/';
                     }" maxlength="10" autocomplete="off" required>
-                    <input type="text" id="profissaoInputEdit" placeholder="Profissão" style="width: 60%;" autocomplete="off">
+                    <input type="text" id="profissaoInputEdit" placeholder="Profissão" style="width: 60%;"
+                        autocomplete="off">
                 </div>
                 <div class="modalLinha">
                     <input type="email" id="emailInputEdit" placeholder="Email" style="width: 60%;" autocomplete="off">
-                    <input type="number" id="foneInputEdit" placeholder="Fone" required style="width: 40%;" autocomplete="off">
+                    <input type="number" id="foneInputEdit" placeholder="Fone" required style="width: 40%;"
+                        autocomplete="off">
                 </div>
                 <div class="buttonsEdit">
                     <button id="btEditarCliente">Salvar</button>
                     <button id="mostrarProcedimentos">Procedimentos</button>
-                    <button id="excluirCliente" >Excluir</button>
+                    <button id="excluirCliente">Excluir</button>
                     <button id="btVoltarEdit">Voltar</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div class="modalShowProcedimentos" id="modalShowProcedimentos">
+        <div class="modalShowProcedimentosConteudo">
+            <h1 id="nomeClienteHeader">Guilherme</h1>
+
+            <div class="line">
+                <select id="selectTipoProcedimento">
+                    <option value="Teste">Teste</option>
+                </select>
+                <button id="btAddNovaAvalicao">Novo</button>
+                <button id="btSairModalShowProc">Sair</button>
+            </div>
+            <table id="tableProcedimentos">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Resultado</th>
+                        <th>Obs</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modalNewProcedimentos" id="modalNewProcedimentos">
+        <div class="modalNewProcedimentosConteudo">
+            <form class="formNewProcedimento" id="formNewProcedimento">
+                <h1>Nova Avaliação</h1>
+                <select id="selectTipoNewProcedimento"></select>
+                <input type="text" id="dt_avaliacao" onkeyup="
+                var v = this.value;
+                if (v.match(/^\d{2}$/) !== null) {
+                    this.value = v + '/';
+                } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+                    this.value = v + '/';
+                }" maxlength="10" required placeholder="Data da Avalição">
+                <input type="text" id="resultadoAvaliacao" required placeholder="Resultado">
+                <input type="text" id="obsAvaliacao" placeholder="Observação">
+                <button id="btCadastraAvaliacao">Salvar</button>
+                <button id="btSairAvaliacao">Sair</button>
+            </form>
+        </div>
+    </div>
+
     <div class="action__div">
         <input type="text" id="searchInput" placeholder="Buscar por nome" autocomplete="off">
         <button id="btNovoCliente">Adicionar Novo</button>
     </div>
     <div class="table-container">
-        <table id="tableClientes"> 
+        <table id="tableClientes">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -116,4 +172,5 @@
     </div>
     <script type="module" src="clientes.js"></script>
 </body>
+
 </html>

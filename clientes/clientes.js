@@ -67,6 +67,8 @@ function AbrirModalClientesEdit(cliente, id) {
     modalClientesEdit.style.display = 'block'
     idModalEdicao = id
 
+    localStorage.setItem('clienteBuscado', cliente.id)
+
     nomeInputEdit.value = cliente.nome
     cpfInputEdit.value = cliente.cpf
     enderecoInputEdit.value = cliente.endereco
@@ -90,6 +92,166 @@ btExcluirCliente.addEventListener('click', () => {
 })
 btVoltarModalEdit.addEventListener('click', FecharModalClientesEdit)
 btEditarCliente.addEventListener('click', EditarCliente)
+
+// Modal de procedimentos ///////////////////////////////////////////////////////////////
+const tableProcedimentos = document.getElementById('tableProcedimentos')
+const tbodyProcedimentos = document.getElementById('tableProcedimentos').getElementsByTagName('tbody')[0]
+const modalShowProcedimentos = document.getElementById('modalShowProcedimentos')
+const selectTipoProcedimento = document.getElementById('selectTipoProcedimento')
+const btaddNovaAvaliacao = document.getElementById('btAddNovaAvalicao')
+const btSairModalShowProc = document.getElementById('btSairModalShowProc')
+const modalNomeClienteH1 = document.getElementById('nomeClienteHeader')
+
+async function AbrirModalShowProcedimentos(event) {
+    event.preventDefault()
+    await CarregarSelectProcedimentos('selectTipoProcedimento')
+    await LoadAvaliacoes()
+    modalShowProcedimentos.style.display = 'block'
+    modalNomeClienteH1.innerText = nomeInputEdit.value
+}
+function FecharModalShowProcedimentos() {
+    localStorage.removeItem('clienteBuscado')
+    modalShowProcedimentos.style.display = 'none'
+}
+
+btaddNovaAvaliacao.addEventListener('click', AbrirModalNewProcedimentos)
+selectTipoProcedimento.addEventListener('change', LoadAvaliacoes)
+btProcedimentos.addEventListener('click', AbrirModalShowProcedimentos)
+btSairModalShowProc.addEventListener('click', FecharModalShowProcedimentos)
+
+async function CarregarSelectProcedimentos(select) {
+    const selectProcedimentos = document.getElementById(select)
+    const chave = localStorage.getItem('chaveConectada');
+
+    const procedimentos = await sendGet('/procedimentos/' + chave)
+    if (procedimentos) {
+        selectProcedimentos.innerHTML = '';
+        procedimentos.forEach(procedimento => {
+            const option = document.createElement('option');
+            option.value = procedimento.id;
+            option.textContent = procedimento.procedimento;
+            selectProcedimentos.appendChild(option);
+        });
+    } else {
+        alert('Erro ao carregar procedimentos!');
+    }
+}
+
+async function LoadAvaliacoes() {
+    const chave = localStorage.getItem('chaveConectada');
+    const clienteBuscado = localStorage.getItem('clienteBuscado');
+
+    const avaliacoes = await sendGet('/avaliacoes/' + chave + '/' + clienteBuscado);
+
+    // Use a comparação direta ou conversão para string conforme necessário
+    const filteredAvaliacoes = avaliacoes.filter(avaliacao => avaliacao.id_procedimento === parseInt(selectTipoProcedimento.value));
+
+    while (tableProcedimentos.rows.length > 1) {
+        tableProcedimentos.deleteRow(1);
+    }
+    for (let i = 0; i < filteredAvaliacoes.length; i++) {
+        const item = filteredAvaliacoes[i];
+        const row = tbodyProcedimentos.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        cell1.innerHTML = new Date(item.dt_leitura).toLocaleDateString('pt-BR');
+        cell2.innerHTML = item.resultado
+        cell3.innerHTML = item.observacao;
+        const trashIcon = document.createElement('img');
+        trashIcon.src = "../../img/trash.png";
+        trashIcon.alt = "excluir";
+        trashIcon.onclick = function (event) {
+            event.stopPropagation();
+            DeletarAvaliacao(item.id);
+        };
+        cell4.appendChild(trashIcon);
+    }
+}
+
+
+/////////// Modal Nova Avaliação ////////////////////////////////////////////////////////////////////////////////////////////////
+
+const modalNewAva = document.getElementById('modalNewProcedimentos')
+const formNewAva = document.getElementById('formNewProcedimento')
+
+const selectTipoNewProcedimento = document.getElementById('selectTipoNewProcedimento')
+const inputDt_Avaliacao = document.getElementById('dt_avaliacao')
+const inputResAva = document.getElementById('resultadoAvaliacao')
+const inputObsAva = document.getElementById('obsAvaliacao')
+
+const btCadastrarAvaliacao = document.getElementById('btCadastraAvaliacao')
+const btSairAvaliacao = document.getElementById('btSairAvaliacao')
+
+async function AbrirModalNewProcedimentos(event) {
+    event.preventDefault()
+    await CarregarSelectProcedimentos('selectTipoNewProcedimento')
+    selectTipoNewProcedimento.value = selectTipoProcedimento.value
+    modalNewAva.style.display = 'block'
+}
+function FecharModalNewProcedimentos(event) {
+    if (event) {
+        event.preventDefault();
+    }
+    modalNewAva.style.display = 'none';
+    formNewAva.reset();
+}
+
+btCadastrarAvaliacao.addEventListener('click', CadastrarAvaliacao)
+btSairAvaliacao.addEventListener('click', FecharModalNewProcedimentos)
+
+
+async function CadastrarAvaliacao(event) {
+    event.preventDefault()
+    if (formNewAva.checkValidity()) {
+        if (isValidDate(inputDt_Avaliacao.value)) {
+            const usuario = localStorage.getItem('usuarioConectado')
+            const chave = localStorage.getItem('chaveConectada');
+            const id_cliente = localStorage.getItem('clienteBuscado')
+            const id_procedimento = selectTipoNewProcedimento.value
+            const resultado = inputResAva.value
+            const observacao = inputObsAva.value
+            const dt_leitura = parseDate(inputDt_Avaliacao.value)
+            const body = {
+                usuario,
+                chave,
+                id_cliente,
+                id_procedimento,
+                resultado,
+                observacao,
+                dt_leitura,
+            }
+            const response = await sendPost('/avaliacoes', body)
+            if (response) {
+                await LoadAvaliacoes()
+                FecharModalNewProcedimentos()
+                formNewAva.reset()
+            } else {
+                alert('Erro na conexão com o servidor!')
+            }
+        } else {
+            alert('Data Inválida!')
+        }
+    } else {
+        reportValidity()
+    }
+}
+
+async function DeletarAvaliacao(id) {
+    const confirmacao = confirm('Você tem certeza que deseja apagar essa avaliação?');
+    if (confirmacao) {
+        const usuario = localStorage.getItem('usuarioConectado');
+        const data = { usuario };
+        const response = await sendDelete('/avaliacoes/' + id, data)
+        if (response) {
+            LoadAvaliacoes();
+        } else {
+            alert('Erro ao deletar avaliação no banco de dados!');
+        }
+    }
+}
+
 
 /////////// Funções ////////////////////////////////////////////////////////////////////////////////////////////////
 

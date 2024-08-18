@@ -177,6 +177,139 @@ input{
     cursor: pointer ;
 }
 
+/* Modal que mostra os procedimentos //////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.modalShowProcedimentos {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px; 
+}
+
+.modalShowProcedimentosConteudo{
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #ffffff;
+    margin: 2% auto 0 auto;
+    width: 60%;
+    height: 380px;
+}
+
+.line{
+    width: 87%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.modalShowProcedimentosConteudo select, .modalShowProcedimentosConteudo button {
+    font-size: 1.0rem;
+    border: 1px solid #374866;
+    border-radius: 0.6rem;
+    outline: none;
+    background: #ffffff;
+    color: black;
+    padding: 0.2rem 1rem;
+    width: 60%;
+    text-align: center;
+}
+
+.modalShowProcedimentosConteudo button {
+    background-color: #374866;
+    color: #ffffff;
+    cursor: pointer;
+    width: 20%;
+}
+
+.modalShowProcedimentosConteudo #btSairModalShowProc {
+    background-color: transparent;
+    color: #374866;
+}
+
+.modalShowProcedimentosConteudo table{
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.modalShowProcedimentosConteudo table tbody{
+    overflow-y: auto;
+    max-height: 230px;
+}
+
+.modalShowProcedimentosConteudo table tbody td img {
+    width: 1.5rem;
+    cursor: pointer;
+}
+
+/* Modal que cria os procedimentos //////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.modalNewProcedimentos {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px; 
+}
+
+.modalNewProcedimentosConteudo{
+    border-radius: 1rem;
+    padding: 0 0.5rem ;
+    background: #ffffff;
+    margin: 2% auto 0 auto;
+    width: 30%;
+    height: 290px;
+}
+
+.modalNewProcedimentosConteudo form{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 80%;
+}
+
+.modalNewProcedimentosConteudo select, .modalNewProcedimentosConteudo button {
+    font-size: 1.0rem;
+    border: 1px solid #374866;
+    border-radius: 0.6rem;
+    outline: none;
+    background: #ffffff;
+    color: black;
+    padding: 0.2rem 1rem;
+    width: 90%;
+    text-align: center;
+}
+
+.modalNewProcedimentosConteudo button {
+    background-color: #374866;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.modalNewProcedimentosConteudo #btSairAvaliacao {
+    background-color: transparent;
+    color: #374866;
+}
+
 /* Tabela de Clientes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */ 
 
 .action__div {
