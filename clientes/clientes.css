@@ -274,9 +274,9 @@ input{
     border-radius: 1rem;
     padding: 0 0.5rem ;
     background: #ffffff;
-    margin: 2% auto 0 auto;
+    margin: 5% auto 0 auto;
     width: 30%;
-    height: 290px;
+    height: 250px;
 }
 
 .modalNewProcedimentosConteudo form{
@@ -297,6 +297,13 @@ input{
     padding: 0.2rem 1rem;
     width: 90%;
     text-align: center;
+}
+
+.modalNewProcedimentosConteudo .linhaNewAva {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .modalNewProcedimentosConteudo button {

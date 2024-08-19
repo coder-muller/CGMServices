@@ -110,7 +110,6 @@ async function AbrirModalShowProcedimentos(event) {
     modalNomeClienteH1.innerText = nomeInputEdit.value
 }
 function FecharModalShowProcedimentos() {
-    localStorage.removeItem('clienteBuscado')
     modalShowProcedimentos.style.display = 'none'
 }
 
@@ -143,7 +142,6 @@ async function LoadAvaliacoes() {
 
     const avaliacoes = await sendGet('/avaliacoes/' + chave + '/' + clienteBuscado);
 
-    // Use a comparação direta ou conversão para string conforme necessário
     const filteredAvaliacoes = avaliacoes.filter(avaliacao => avaliacao.id_procedimento === parseInt(selectTipoProcedimento.value));
 
     while (tableProcedimentos.rows.length > 1) {
