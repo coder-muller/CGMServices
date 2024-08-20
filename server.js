@@ -581,6 +581,98 @@ app.delete('/profissionais/:id', async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+app.get('/horarios/:chave', async (req, res) => {
+    const chave = req.params.chave
+    try {
+        const all = await prisma.horarios.findMany({
+            where:{
+                chave:chave,
+            }
+        })
+        return res.status(200).json(all)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }
+})
+
+app.post('/horarios', async (req, res) => {
+    const { chave, dia, id_setor, h_inicio, h_termino, demanda, usuario } = req.body
+    try {
+        const newHorario = await prisma.horarios.create({
+            data: {
+                chave,
+                dia,
+                id_setor: parseInt(id_setor),
+                h_inicio,
+                h_termino,
+                demanda: parseInt(demanda),
+            }
+        });
+        try {
+            await createLog(chave, "Inclusão", "horarios", `Horario com ID: ${newHorario.id} criado, dia: ${newHorario.dia}`, newHorario.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(newHorario)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.put('/horarios/:id', async (req, res) => {
+    const id = req.params.id
+    const { chave, dia, id_setor, h_inicio, h_termino, demanda, usuario } = req.body
+    try {
+        const updatedHorario = await prisma.horarios.update({
+            where:{
+                id:parseInt(id)
+            },
+            data: {
+                chave,
+                dia,
+                id_setor: parseInt(id_setor),
+                h_inicio,
+                h_termino,
+                demanda: parseInt(demanda),
+            }
+        });
+        try {
+            await createLog(chave, "Edição", "horaios", `Horaio com ID: ${updatedHorario.id} editado, dia: ${updatedHorario.dia}`, updatedHorario.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(updatedHorario)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+app.delete('/horarios/:id', async (req, res) => {
+    const id = req.params.id
+    const usuario = req.body.usuario
+    try {
+        const deletedHorario = await prisma.horarios.delete({
+            where:{
+                id:parseInt(id)
+            },
+        });
+        try {
+            await createLog(deletedHorario.chave, "Exclusão", "horarios", `Horario com ID: ${deletedHorario.id} deletado, dia: ${deletedHorario.dia}`, deletedHorario.id, usuario)
+        } catch (error) {
+            console.error(error)
+        }
+        return res.status(200).json(deletedHorario)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: error.message })
+    }  
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 async function createLog(chave, procedimento, tabela, log, id_registro, usuario){
     try {

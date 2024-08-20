@@ -73,6 +73,18 @@ model profissionais {
   updatedAt    DateTime @updatedAt
 }
 
+model horarios {
+  id        Int      @id @unique @default(autoincrement())
+  chave     String
+  dia       String
+  id_setor  Int
+  h_inicio  String
+  h_termino String
+  demanda   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model logs {
   id           Int      @id @unique @default(autoincrement())
   chave        String
