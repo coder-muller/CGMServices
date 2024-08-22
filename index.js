@@ -1,17 +1,16 @@
+import { sendGet } from "./utils"
+
 const chaveInput = document.getElementById('chaveInput')
 const usuarioInput = document.getElementById('usuarioInput')
 const senhaInput = document.getElementById('senhaInput')
 const loginForm = document.getElementById('loginForm')
 
 async function logIn() {
-
     if (loginForm.checkValidity()) {
         const chave = chaveInput.value
         const usuario = usuarioInput.value
         const senha = senhaInput.value
-        try {
-            const response = await fetch('http://localhost:4567/usuarios/' + chave)
-            const users = await response.json()
+            const users = await sendGet('/usuarios/' + chave)
             if (users.length === 0) {
                 alert('Chave não encontrada')
                 loginForm.reset()
@@ -37,11 +36,6 @@ async function logIn() {
             localStorage.setItem('permissaoConectada', user.permissao)
 
             window.location.href='principal/principal.html'
-        } catch (error) {
-            console.error("Erro ao realizar login! erro:" + error)
-            alert('Ocorreu um erro ao tentar realizar o login. Por favor, tente novamente mais tarde.')
-        }
-
     } else {
         loginForm.reportValidity()
     }

@@ -1,3 +1,5 @@
+import { sendDelete, sendGet, sendPost, toggleModal } from "../../utils.js"
+
 const modal = document.getElementById('modal')
 const btNovoUsuario = document.getElementById('novoUsuario')
 const btVoltarModal = document.getElementById('btVoltarModal')
@@ -14,26 +16,24 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 btNovoUsuario.onclick = function () {
-    modal.style.display = 'block';
+    toggleModal('modal', true)
 }
 
 btVoltarModal.onclick = function () {
-    modal.style.display = 'none';
+    toggleModal('modal', false)
     form.reset()
 }
 
 window.onclick = function (event) {
     if (event.target == modal) {
-        modal.style.display = 'none';
+        toggleModal('modal', false)
     }
 }
 
 async function carregarUsuarios() {
     const chave = localStorage.getItem('chaveConectada')
-    try {
-        const response = await fetch('http://localhost:4567/usuarios/' + chave)
-        if ((await response).ok) {
-            const data = await response.json()
+        const data = await sendGet('/usuarios/' + chave)
+        if (data) {
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
@@ -53,10 +53,6 @@ async function carregarUsuarios() {
             alert('Erro ao carregar usuários!')
             console.log(response.json())
         }
-    } catch (error) {
-        console.log(error)
-        alert('Erro ao carregar usuários!')
-    }
 }
 
 async function novoUsuario() {
@@ -79,16 +75,10 @@ async function novoUsuario() {
                     permissao,
                     usuario,
                 }
-                const response = await fetch('http://localhost:4567/usuarios', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                if ((await response).ok) {
+                const response = await sendPost('/usuarios', data)
+                if (response) {
                     alert('Usuário criado com sucesso!')
-                    modal.style.display = 'none';
+                    toggleModal('modal', false)
                     await carregarUsuarios()
                 } else {
                     alert('Erro ao criar usuário!')
@@ -112,27 +102,16 @@ async function deletarUsuario(id, permissao) {
     const usuario = localStorage.getItem('usuarioConectado')
     if (confirmacao) {
         if (parseInt(permissaoConectada) >= parseInt(permissao)) {
-            try {
                 const data = {
                     usuario,
                 }
-                const response = await fetch('http://localhost:4567/usuarios/' + id, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
+                const response = await sendDelete('/usuarios/' + id, data)
+                if (response) {
                     alert('Usuário deletado com secesso!')
                     await carregarUsuarios()
                 } else {
                     alert('Erro ao excluir usuário!')
                 }
-            } catch (error) {
-                console.error(error)
-                alert('Erro ao excluir usuário!')
-            }
         } else {
             alert('Nível de permissão insuficiente para exclusão!')
         }
