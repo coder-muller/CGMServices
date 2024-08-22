@@ -131,35 +131,40 @@ async function CadastrarHorario(event) {
     if (event) {
         event.preventDefault()
     }
-    const chave = localStorage.getItem('chaveConectada')
-    const usuario = localStorage.getItem('usuarioConectado')
-    const id_setor = document.getElementById('selectSetor').value;
-    const dia = document.getElementById('selectDia').value;
-    const h_inicio = document.getElementById('hInicio').value;
-    const h_termino = document.getElementById('hTermino').value;
-    const demanda = document.getElementById('demanda').value;
-    const body = { chave, usuario, id_setor, dia, h_inicio, h_termino, demanda };
-    if (isEdit) {
-        const response = await sendPut('/horarios/' + editId, body);
-        if (response) {
-            carregarTabela();
-            FecharModal();
-            form.reset()
+    if (form.checkValidity()) {
+        const chave = localStorage.getItem('chaveConectada')
+        const usuario = localStorage.getItem('usuarioConectado')
+        const id_setor = document.getElementById('selectSetor').value;
+        const dia = document.getElementById('selectDia').value;
+        const h_inicio = document.getElementById('hInicio').value;
+        const h_termino = document.getElementById('hTermino').value;
+        const demanda = document.getElementById('demanda').value;
+        const body = { chave, usuario, id_setor, dia, h_inicio, h_termino, demanda };
+        if (isEdit) {
+            const response = await sendPut('/horarios/' + editId, body);
+            if (response) {
+                carregarTabela();
+                FecharModal();
+                form.reset()
+            } else {
+                console.error('Erro ao atualizar o horário.');
+                alert('Erro ao atualizar horário!');
+            }
         } else {
-            console.error('Erro ao atualizar o horário.');
-            alert('Erro ao atualizar horário!');
+            const response = await sendPost('/horarios', body);
+            if (response) {
+                carregarTabela()
+                FecharModal()
+                form.reset()
+            } else {
+                console.error('Erro ao cadastrar o horário.');
+                alert('Erro ao cadastrar horário!')
+            }
         }
     } else {
-        const response = await sendPost('/horarios', body);
-        if (response) {
-            carregarTabela()
-            FecharModal()
-            form.reset()
-        } else {
-            console.error('Erro ao cadastrar o horário.');
-            alert('Erro ao cadastrar horário!')
-        }
+        form.reportValidity();
     }
+
 }
 
 async function Deletar(id) {
