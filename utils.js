@@ -34,6 +34,24 @@ export function convertIsoToDate(isoDateStr) {
     return `${day}/${month}/${year}`;
 }
 
+export async function carregarSelect(rota, selectHtml, value, campoTexto) {
+    const chave = localStorage.getItem('chaveConectada');
+    const response = await sendGet(rota + '/' + chave);
+    if (response) {
+        const select = document.getElementById(selectHtml);
+        select.innerHTML = '';
+        response.forEach(data => {         
+            const option = document.createElement('option');
+            option.value = data[value];
+            option.textContent = data[campoTexto];
+            select.appendChild(option);
+        });
+    } else {
+        console.error('Erro na conexão com o banco de dados!');
+    }
+}
+
+
 export async function sendGet(rota) {
     try {
         const responseData = await fetch(BASE_URL + rota, {

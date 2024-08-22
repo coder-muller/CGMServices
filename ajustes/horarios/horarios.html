@@ -1,21 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>CGM Serevices</title>
     <link rel="stylesheet" href="horarios.css">
 </head>
+
 <body>
-    
+
     <header>
         <img src="../../img/back.png" alt="voltar" onclick="window.location.href='../ajustes.html'">
         <h1>Horários</h1>
-        <button id="novoHorario">Novo</button>
+        <div class="linha" style="width: 20%;">
+            <select id="selectDiaForm">
+                <option value="Segunda">Segunda</option>
+                <option value="Terça">Terça</option>
+                <option value="Quarta">Quarta</option>
+                <option value="Quinta">Quinta</option>
+                <option value="Sexta">Sexta</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+            </select>
+            <button id="novoHorario" style="width: auto;">Novo</button>
+        </div>
     </header>
 
-    
+    <div class="modal" id="modal">
+        <form id="formHorario">
+            <h1 style="font-size: x-large; font-weight: 600;">Novo Horário</h1>
+            <div class="linha">
+                <select id="selectSetor" style="width: 50%;"></select>
+                <select id="selectDia" style="width: 50%;">
+                    <option value="Segunda">Segunda</option>
+                    <option value="Terça">Terça</option>
+                    <option value="Quarta">Quarta</option>
+                    <option value="Quinta">Quinta</option>
+                    <option value="Sexta">Sexta</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                </select>
+            </div>
+            <div class="linha">
+                <input type="text" id="hInicio" placeholder="Hora Início" autocomplete="off" required>
+                <input type="text" id="hTermino" placeholder="Hora Término" autocomplete="off" required>
+                <input type="text" id="demanda" placeholder="Demanda" autocomplete="off" required>
+            </div>
+            <div class="buttons">
+                <button id="cadastarHorario">Salvar</button>
+                <button id="btVoltarModal">Voltar</button>
+            </div>
+        </form>
+    </div>
+
+    <table id="tableHorarios">
+        <thead>
+            <tr>
+                <th style="width: 30%;">Setor</th>
+                <th style="width: 20%;">Inicio</th>
+                <th style="width: 20%;">Término</th>
+                <th style="width: 20%;">Demanda</th>
+                <th style="width: 10%;"></th>
+                <th style="width: 10%;"></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script type="module" src="horarios.js"></script>
 </body>
+
 </html>

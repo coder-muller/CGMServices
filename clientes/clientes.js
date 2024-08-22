@@ -1,4 +1,4 @@
-import { parseDate, isValidDate, convertIsoToDate, sendGet, sendPost, sendPut, sendDelete } from '../utils.js';
+import { parseDate, isValidDate, convertIsoToDate, sendGet, sendPost, sendPut, sendDelete, carregarSelect } from '../utils.js';
 
 const tableClientes = document.getElementById('tableClientes').getElementsByTagName('tbody')[0]
 const tableClientesOver = document.getElementById('tableClientes')
@@ -104,7 +104,7 @@ const modalNomeClienteH1 = document.getElementById('nomeClienteHeader')
 
 async function AbrirModalShowProcedimentos(event) {
     event.preventDefault()
-    await CarregarSelectProcedimentos('selectTipoProcedimento')
+    await carregarSelect('/procedimentos', 'selectTipoProcedimento', 'id', 'procedimento')
     await LoadAvaliacoes()
     modalShowProcedimentos.style.display = 'block'
     modalNomeClienteH1.innerText = nomeInputEdit.value
@@ -117,24 +117,6 @@ btaddNovaAvaliacao.addEventListener('click', AbrirModalNewProcedimentos)
 selectTipoProcedimento.addEventListener('change', LoadAvaliacoes)
 btProcedimentos.addEventListener('click', AbrirModalShowProcedimentos)
 btSairModalShowProc.addEventListener('click', FecharModalShowProcedimentos)
-
-async function CarregarSelectProcedimentos(select) {
-    const selectProcedimentos = document.getElementById(select)
-    const chave = localStorage.getItem('chaveConectada');
-
-    const procedimentos = await sendGet('/procedimentos/' + chave)
-    if (procedimentos) {
-        selectProcedimentos.innerHTML = '';
-        procedimentos.forEach(procedimento => {
-            const option = document.createElement('option');
-            option.value = procedimento.id;
-            option.textContent = procedimento.procedimento;
-            selectProcedimentos.appendChild(option);
-        });
-    } else {
-        alert('Erro ao carregar procedimentos!');
-    }
-}
 
 async function LoadAvaliacoes() {
     const chave = localStorage.getItem('chaveConectada');
@@ -184,7 +166,7 @@ const btSairAvaliacao = document.getElementById('btSairAvaliacao')
 
 async function AbrirModalNewProcedimentos(event) {
     event.preventDefault()
-    await CarregarSelectProcedimentos('selectTipoNewProcedimento')
+    await carregarSelect('/procedimentos', 'selectTipoNewProcedimento', 'id', 'procedimento')
     selectTipoNewProcedimento.value = selectTipoProcedimento.value
     modalNewAva.style.display = 'block'
 }
