@@ -84,12 +84,7 @@ async function Cadastrar(event) {
         const id_setor = setoresSelect.value;
         const chave = localStorage.getItem('chaveConectada');
         const usuario = localStorage.getItem('usuarioConectado');
-        const data = {
-            chave,
-            profissional,
-            id_setor,
-            usuario,
-        };
+        const data = { chave, profissional, id_setor, usuario };
         if (isEdit) {
             response = await sendPut('/profissionais/' + editId, data);
         } else {
