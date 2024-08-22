@@ -1,11 +1,10 @@
-import { sendGet, sendPost, sendPut, sendDelete, carregarSelect } from '../../utils.js';
+import { sendGet, sendPost, sendPut, sendDelete, carregarSelect, toggleModal } from '../../utils.js';
 
 const btNovo = document.getElementById('novoHorario')
 const selectDiaForm = document.getElementById('selectDiaForm')
 let isEdit = false;
 let editId = null;
 
-const modal = document.getElementById('modal')
 const form = document.getElementById('formHorario')
 const btCadastrar = document.getElementById('cadastarHorario')
 const btSairModal = document.getElementById('btVoltarModal')
@@ -14,22 +13,52 @@ const table = document.getElementById('tableHorarios')
 const tbody = document.getElementById('tableHorarios').getElementsByTagName('tbody')[0]
 
 btCadastrar.addEventListener('click', CadastrarHorario)
-btNovo.addEventListener('click', AbrirModal)
+btNovo.addEventListener('click', () => toggleModal('modal', true))
 btSairModal.addEventListener('click', FecharModal)
 selectDiaForm.addEventListener('change', carregarTabela);
 
 document.addEventListener('DOMContentLoaded', async function () {
     await carregarTabela()
     await carregarSelect('/setores', 'selectSetor', 'id', 'setor');
+    IMask(document.getElementById('hInicio'), {
+        mask: 'HH:MM',
+        blocks: {
+            HH: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 23,
+                maxLength: 2
+            },
+            MM: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 59,
+                maxLength: 2
+            }
+        }
+    });
+    IMask(document.getElementById('hTermino'), {
+        mask: 'HH:MM',
+        blocks: {
+            HH: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 23,
+                maxLength: 2
+            },
+            MM: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 59,
+                maxLength: 2
+            }
+        }
+    });
 });
-
-function AbrirModal() {
-    modal.style.display = 'block'
-}
 
 function AbrirModalEdit(item) {
     isEdit = true;
-    modal.style.display = 'block'
+    toggleModal('modal', true)
     if (item) {
         editId = item.id;
         document.getElementById('selectSetor').value = item.id_setor;
@@ -45,7 +74,7 @@ function FecharModal(event) {
     }
     isEdit = false;
     form.reset()
-    modal.style.display = 'none'
+    toggleModal('modal', false)
 }
 
 async function carregarTabela() {

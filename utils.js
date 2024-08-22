@@ -130,3 +130,12 @@ export async function sendDelete(rota, body) {
         console.error('Erro na conexão com o servidor!', error)
     }
 }
+
+export function toggleModal(modalId, status) {
+    const modal = document.getElementById(modalId);
+    if (status) {
+        modal.style.display = 'block';
+    } else {
+        modal.style.display = 'none';
+    }
+}
